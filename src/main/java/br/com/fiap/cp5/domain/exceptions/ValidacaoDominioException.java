@@ -1,4 +1,4 @@
-package br.com.fiap.cp5-java.domain.exceptions;
+package br.com.fiap.cp5.domain.exceptions;
 
 public class ValidacaoDominioException extends RuntimeException {
 
