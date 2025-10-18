@@ -1,27 +1,57 @@
 package br.com.fiap.cp5.application.service;
 
+import br.com.fiap.cp5.application.exception.BookUnsupportedOperation;
 import br.com.fiap.cp5.domain.exceptions.EntidadeNaoLocalizada;
 import br.com.fiap.cp5.domain.model.Book;
+import br.com.fiap.cp5.domain.repository.BookRepository;
 import br.com.fiap.cp5.domain.service.BookService;
 
+import java.util.List;
+
 public class BookServiceImpl implements BookService {
+    private final BookRepository bookRepository;
+
+    public BookServiceImpl(BookRepository bookRepository) {
+        this.bookRepository = bookRepository;
+    }
+
     @Override
     public Book criar(Book book) {
-        return null;
+        try {
+            buscarPorID(book.getId_book());
+            throw new BookUnsupportedOperation("Livro já cadastrado");
+        } catch (EntidadeNaoLocalizada e) {
+            return bookRepository.criar(book);
+        }
     }
 
     @Override
-    public Book buscarPorID(int id) throws EntidadeNaoLocalizada {
-        return null;
-    }
-
-    @Override
-    public Book atualizar(Book book) {
-        return null;
+    public Book atualizar(Book book) throws EntidadeNaoLocalizada {
+        try {
+            buscarPorID(book.getId_book());
+            return bookRepository.atualizar(book);
+        } catch (EntidadeNaoLocalizada e) {
+            throw new EntidadeNaoLocalizada("O livro que está tentando editar não existe");
+        }
     }
 
     @Override
     public void deletar(int id) throws EntidadeNaoLocalizada {
+        try {
+            buscarPorID(id);
+            bookRepository.deletar(id);
+        } catch (EntidadeNaoLocalizada e) {
+            throw new EntidadeNaoLocalizada("Livro não localizado");
+        }
+    }
 
+    @Override
+    public List<Book> buscarBooksPorAuthor(int idAuthor) {
+        return bookRepository.buscarBooksPorAuthor(idAuthor);
+    }
+
+    @Override
+    public Book buscarPorID(int id) throws EntidadeNaoLocalizada {
+        return bookRepository.buscarPorID(id);
     }
 }

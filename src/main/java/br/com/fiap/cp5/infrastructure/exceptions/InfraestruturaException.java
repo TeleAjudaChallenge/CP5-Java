@@ -1,4 +1,4 @@
-package br.com.fiap.cp5-java.infrastructure.exceptions;
+package br.com.fiap.cp5.infrastructure.exceptions;
 
 public class InfraestruturaException extends  RuntimeException {
 
