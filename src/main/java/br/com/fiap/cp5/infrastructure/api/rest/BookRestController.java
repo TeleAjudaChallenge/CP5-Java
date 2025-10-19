@@ -1,12 +1,15 @@
 package br.com.fiap.cp5.infrastructure.api.rest;
 
 import br.com.fiap.cp5.domain.model.Book;
+import br.com.fiap.cp5.infrastructure.exceptions.InfraestruturaException;
 import br.com.fiap.cp5.interfaces.BookController;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import br.com.fiap.cp5.domain.exceptions.EntidadeNaoLocalizada;
+
+import java.util.List;
 
 @Path("/books")
 @Produces(MediaType.APPLICATION_JSON)
@@ -67,6 +70,18 @@ public class BookRestController {
             throw new RuntimeException(e);
         }
     }
+
+    @GET
+    @Path("/authors/{id}/books")
+    public Response buscarBooksPorAuthor(@PathParam("id") int id){
+        try {
+            List<Book> book = this.bookController.buscarBooksPorAuthor(id);
+            return Response.ok(book).build();
+        } catch (Exception e){
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(e.getMessage()).build();
+        }
+    }
+
 
 
 
