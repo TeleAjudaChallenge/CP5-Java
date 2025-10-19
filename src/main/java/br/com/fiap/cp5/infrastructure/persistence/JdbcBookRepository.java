@@ -69,7 +69,7 @@ public class JdbcBookRepository implements BookRepository {
     }
 
     private Book mapearBook(ResultSet rs) throws SQLException {
-        Integer id = rs.getInt("id_author");
+        Integer id = rs.getInt("id_book");
         String title = rs.getString("title");
         String isbn = rs.getString("isbn");
         Integer authorId = rs.getInt("T_AUTHOR_id_author");
